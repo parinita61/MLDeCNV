@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLDeCNV Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width:90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .table-responsive {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .table thead th {
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-back {
+            background-color: #ff0000; /* Red color for back button */
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h2>Prediction Results</h2>
+        <div class="table-responsive">
+            {{ data | safe }}
+        </div>
+        <br>
+        <a href="{{ url_for('download_results') }}" class="btn"><i class="fas fa-download"></i> Download Prediction Results</a>
+        <a href="{{ url_for('download_feature') }}" class="btn"><i class="fas fa-download"></i> Download Features</a>
+        <a href="{{ url_for('analysis') }}" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Analysis</a>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

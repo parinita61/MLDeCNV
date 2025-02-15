@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLDeCNV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            margin: 0;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .navbar a.active {
+            background-color: #4CAF50;
+        }
+
+        .navbar .icon {
+            display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar a:not(:first-child),
+            .dropdown .dropbtn {
+                display: none;
+            }
+
+            .navbar a.icon {
+                float: right;
+                display: block;
+            }
+
+            .navbar.responsive {
+                position: relative;
+            }
+
+            .navbar.responsive .icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            .navbar.responsive a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="https://icar.org.in/" title='Goto ICAR Webpage' target='_blank'>
+            <img src="/static/images/icar2.png" alt="ICAR Logo" style="position: absolute; top: 0; left: 0; height: 100%; width: auto;">
+        </a>
+        <h1>MLDeCNV</h1>
+        <p>Machine Learning for Decoding Copy Number Variations</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar" id="myTopnav">
+        <a href="/" class="{% if active_page == 'home' %}active{% endif %}"><i class='fas fa-university'></i> Home</a>
+        <a href="/analysis" class="{% if active_page == 'analysis' %}active{% endif %}"><i class='fa fa-server'></i> Analysis</a>
+        <a href="/tutorial" class="{% if active_page == 'tutorial' %}active{% endif %}"><i class='fa fa-server'></i> Tutorial</a>
+        <a href="/contact" class="{% if active_page == 'contact' %}active{% endif %}"><i class='fa fa-server'></i> Contact</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i></a>
+    </div>
+
+    <!--script for responsive navigation bar-->
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "navbar") {
+                x.className += " responsive";
+            } else {
+                x.className = "navbar";
+            }
+        }
+    </script>
+</body>
+
+</html>

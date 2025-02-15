@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLDeCNV Tutorial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            max-width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .download-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .download-link:hover {
+            background-color: #0056b3;
+        }
+
+        .manual-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="content">
+        <h2>MLDeCNV User Manual</h2>
+        <p>Welcome to the MLDeCNV User Manual. This guide will help you navigate through the analysis process using our tool to detect deletions and duplications in plant genomes.</p>
+
+        <h3>Uploading Data</h3>
+        <ol>
+            <li>Navigate to the Analysis Page: Go to <a href="http://login1.cabgrid.res.in:5106/analysis">http://login1.cabgrid.res.in:5106/analysis</a>.</li>
+            <img src="/static/images/manual1.png" alt="Manual Image 1" class="manual-image">
+            <li>Select Your Data File:</li>
+            <ul>
+                <li><strong>BAM File (*.bam):</strong> This is your binary alignment map file in .bam format, which contains the sequence alignment data. For that you need to run BWA alignment of your sample WGS or WES data to the reference genome of that plant.</li>
+                <img src="/static/images/manual2.png" alt="Manual Image 2" class="manual-image">
+                <li><strong>Target BED Coordinate File (*.bed):</strong> This file specifies the genomic regions of interest. It should be formatted in the standard .bed file format, which includes chromosome number (as specified in in the reference genome index file) and start & end coordinate regions.</li>
+                <p>The format of the target file is as follows:</p>
+                <table border="1">
+                    <tr>
+                        <th>Chromosome</th>
+                        <th>Start Position</th>
+                        <th>End Position</th>
+                    </tr>
+                    <tr>
+                        <td>ENA|CP002684|CP002684.1</td>
+                        <td>16822085</td>
+                        <td>16822889</td>
+                    </tr>
+                    <tr>
+                        <td>ENA|CP002685|CP002685.1</td>
+                        <td>3607303</td>
+                        <td>3627774</td>
+                    </tr>
+                    <tr>
+                        <td>ENA|CP002685|CP002685.1</td>
+                        <td>5412309</td>
+                        <td>5412684</td>
+                    </tr>
+                    <tr>
+                        <td>ENA|CP002686|CP002686.1</td>
+                        <td>11588609</td>
+                        <td>11589356</td>
+                    </tr>
+                    <tr>
+                        <td>ENA|CP002688|CP002688.1</td>
+                        <td>17364512</td>
+                        <td>17367343</td>
+                    </tr>
+                </table>
+                <img src="/static/images/manual3.png" alt="Manual Image 3" class="manual-image">
+                <li><strong>Genome Reference File (*.fasta):</strong> This is the reference genome sequence in FASTA format. It should match the genome version used for generating the BAM file.</li>
+                <img src="/static/images/manual4.png" alt="Manual Image 4" class="manual-image">
+            </ul>
+            <li>Upload the File: Once selected all the 3 file, click the "Upload" button to upload your data.</li>
+            <img src="/static/images/manual5.png" alt="Manual Image 5" class="manual-image">
+        </ol>
+
+        <h3>Running the Analysis</h3>
+        <img src="/static/images/manual6.png" alt="Manual Image 6" class="manual-image">
+        <p>Click on the “Ok” button on the pop-up once all the data are uploaded successfully. Then the analysis will start and the page will look like given below.</p>
+
+        <h3>Viewing Results</h3>
+        <img src="/static/images/manual7.png" alt="Manual Image 7" class="manual-image">
+        <p>Once the analysis is done the page will automatically redirected to the results and the result table will be shown as below where the CNV type i.e whether “Deletion”, “Duplication” or “No CNV” will be predicted in each coordinate provided anda prediction probability and the other parameters of the coordinates will be also shown as below. The user can download the prediction result and also all the features used in the model in the backend.</p>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLDeCNV</title>
+  <style>
+     body {
+      /* font-family: Arial, sans-serif; */
+      margin: 0;
+      padding: 0;
+    }
+
+    .info {
+      background-color: #f9f9f9;
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .info img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .info img:hover {
+      transform: scale(1.05);
+    }
+
+    .info h1 {
+      font-size: 36px;
+      color: #555;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 30px;
+      transition: color 0.3s ease;
+    }
+
+    .info h1:hover {
+      color: #f44336;
+    }
+
+    .info p {
+      font-size: 22px;
+      text-align: justify;
+      color: #333;
+      line-height: 1.6;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .info {
+        padding: 15px;
+      }
+
+      .info p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="info">
+    <img src="/static/images/Cover_Image.jpg" alt="cover image here">
+    <h1 style="font-size: 42px; color: #555; font-weight: bold; text-transform: uppercase; letter-spacing: 3px;">MLDeCNV</h1>
+
+    <p>MLDeCNV (Machine Learning for Decoding Copy Number Variations) is an advanced tool designed for precise prediction and analysis of CNVs in plant genomics. Copy Number Variations (CNVs) refer to alterations in the genome where sections of DNA are duplicated or deleted, resulting in variations in the number of copies of particular genes or genomic regions. Utilizing the XGBoost algorithm, known for its exceptional performance and scalability, MLDeCNV leverages an ensemble of boosted decision trees to classify genomic data, ensuring highly accurate and efficient detection of these deletions and duplications. These CNVs are crucial for understanding genetic diversity, adaptation, and evolutionary mechanisms in plants. </p>
+    <p> By identifying significant genetic variations, MLDeCNV provides insights into traits such as disease resistance, growth, and environmental adaptability. Its user-friendly interface and powerful computational capabilities enable plant geneticists to explore genomic complexities, advancing crop improvement, sustainable agriculture, and food security.</p>
+  </div>
+</body>
+
+</html>

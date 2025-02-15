@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 10px auto;
+            font-size: 16px;
+        }
+
+        select {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .back-button {
+            background-color: #ff0000;
+            /* Red color for back button */
+        }
+
+        .message {
+            color: green;
+            display: none;
+        }
+
+        .progress {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            background-color: #007bff;
+        }
+
+        .please-wait {
+            font-size: 18px;
+            color: #555;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h2>Upload Files for CNV Prediction</h2>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <p><b>Upload BAM file:</b></p>
+            <input type="file" id="bamfile" name="bamfile">
+            <button type="button" onclick="fetchSample('bam')">Use Sample BAM</button>
+            <span id="bamSampleMsg" class="message">Sample BAM loaded.</span>
+
+            <p><b>Upload BED coordinates:</b></p>
+            <input type="file" id="bedfile" name="bedfile">
+            <button type="button" onclick="fetchSample('bed')">Use Sample BED Coordinates</button>
+            <span id="bedSampleMsg" class="message">Sample BED Coordinates loaded.</span>
+
+            <p><b>Choose reference genome:</b></p>
+            <select id="reference" name="reference" onchange="checkReference()">
+                <option value="">Choose...</option>
+                <option value="arabidopsis">Arabidopsis</option>
+                <option value="rice">Rice</option>
+                <option value="wheat">Wheat</option>
+                <option value="maize">Maize</option>
+                <option value="barley">Barley</option>
+                <option value="cucumber">Cucumber</option>
+                <option value="pomegranate">Pomegranate</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="file" id="referencefile" name="referencefile" style="display: none;">
+            <span id="referenceMsg" class="message">Arabidopsis Reference Genome loaded.</span>
+            <!-- Progress bar -->
+            <div class="progress" id="uploadProgress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    Uploading: <span id="uploadPercentage">0%</span>
+                </div>
+                <div class="please-wait" id="pleaseWaitMsg">Please wait for successful upload...</div>
+            </div>
+
+            <div id="spinner" style="display: none;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 50px;"></i>
+                <p>Predicting CNV...</p>
+            </div>
+
+            <button id="uploadBtn" type="button" onclick="uploadFiles()">Upload</button>
+            <button type="button" class="back-button" onclick="window.location.href = '/analysis'">Back</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+
+    <script>
+        let isSampleBamLoaded = false;
+        let isSampleBedLoaded = false;
+
+        function fetchSample(type) {
+            if (type === 'bam') {
+                isSampleBamLoaded = true;
+                document.getElementById('bamfile').style.display = 'none';
+                document.getElementById('bamSampleMsg').style.display = 'inline';
+            } else if (type === 'bed') {
+                isSampleBedLoaded = true;
+                document.getElementById('bedfile').style.display = 'none';
+                document.getElementById('bedSampleMsg').style.display = 'inline';
+            }
+            checkSamplesLoaded();
+        }
+
+        function checkSamplesLoaded() {
+            if (isSampleBamLoaded && isSampleBedLoaded) {
+                document.getElementById('reference').value = 'arabidopsis';
+                document.getElementById('referenceMsg').style.display = 'inline';
+            }
+        }
+
+        function checkReference() {
+            var referenceSelect = document.getElementById('reference');
+            var selectedReference = referenceSelect.value;
+
+            if (selectedReference === 'arabidopsis') {
+                document.getElementById('referenceMsg').style.display = 'inline';
+                document.getElementById('referencefile').style.display = 'none';
+            } else if (selectedReference === 'other') {
+                document.getElementById('referencefile').style.display = 'inline';
+                document.getElementById('referenceMsg').style.display = 'none';
+            } else {
+                document.getElementById('referenceMsg').style.display = 'none';
+                document.getElementById('referencefile').style.display = 'none';
+            }
+        }
+
+        function uploadFiles() {
+            var formData = new FormData();
+            var bamfile = document.getElementById('bamfile').files[0];
+            var bedfile = document.getElementById('bedfile').files[0];
+            var reference = document.getElementById('reference').value;
+            var referencefile = document.getElementById('referencefile').files[0];
+
+            if (!isSampleBamLoaded && !bamfile) {
+                alert('Please select a BAM file to upload.');
+                return;
+            }
+
+            if (!isSampleBedLoaded && !bedfile) {
+                alert('Please select a BED coordinates file to upload.');
+                return;
+            }
+
+            if (reference === '') {
+                alert('Please choose a reference genome.');
+                return;
+            }
+
+            if (reference === 'other' && !referencefile) {
+                alert('Please upload a custom reference genome.');
+                return;
+            }
+
+            formData.append('bamfile', bamfile);
+            formData.append('bedfile', bedfile);
+            formData.append('reference', reference);
+            if (referencefile) {
+                formData.append('referencefile', referencefile);
+            }
+
+            // Display the progress bar while uploading
+            var progressBar = document.getElementById('uploadProgress');
+            progressBar.style.display = 'block';
+            document.getElementById('pleaseWaitMsg').style.display = 'block';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    var percentComplete = (e.loaded / e.total) * 100;
+                    document.getElementById('uploadPercentage').innerText = percentComplete.toFixed(2) + '%';
+                    progressBar.querySelector('.progress-bar').style.width = percentComplete + '%';
+                }
+            };
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    progressBar.style.display = 'none'; // Hide progress bar
+                    document.getElementById('pleaseWaitMsg').style.display = 'none'; // Hide wait message
+
+                    if (xhr.responseText === 'success') {
+                        // Success: show success message and start predicting spinner
+                        alert('Files uploaded successfully. Please click OK for prediction.');
+                        document.getElementById('spinner').style.display = 'block';
+                        // Redirect to the prediction page after a delay
+                        setTimeout(function () {
+                            window.location.href = '/predict';
+                        }, 20000); // Redirect after 20 seconds (adjust as needed)
+                    } else {
+                        // Error handling
+                        alert('Error uploading files.');
+                    }
+                }
+            };
+
+            xhr.send(formData);
+        }
+
+        // Stop spinner when page loading is finished
+        window.onload = function () {
+            document.getElementById('spinner').style.display = 'none';
+        };
+    </script>
+</body>
+
+</html>
